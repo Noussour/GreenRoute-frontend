@@ -8,28 +8,11 @@ import { LetterPullUp } from "@/components/StaggeredLetterPullUp";
 import { BlurIn } from "@/components/BlurIn";
 
 export default function HomePage() {
-  const containerVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delayChildren: 0.2,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
     <div className="flex justify-center pt-20 max-w-screen-lg">
       <div>
         <div className="text-center">
-          <LetterPullUp words="Welcome to next-platter" />
+          <LetterPullUp words="Welcome to GreenRoute" />
           <BlurIn
             text="
             A production-ready template for scalable, modular apps. Packed with
@@ -51,18 +34,6 @@ export default function HomePage() {
             </Link>
           </motion.div>
         </div>
-        <motion.div
-          className="px-4 py-32 grid gap-8 md:grid-cols-2 lg:grid-cols-3"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {features.map((feature) => (
-            <motion.div key={feature.id} variants={itemVariants}>
-              <FeatureCard feature={feature} />
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
     </div>
   );

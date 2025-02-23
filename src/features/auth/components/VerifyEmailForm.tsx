@@ -48,7 +48,7 @@ function VerifyEmailForm() {
     // On success
     form.reset();
     showSuccessToast("Registration successful");
-    router.push("/protected");
+    router.push("/new-route");
 
     setLoading(false);
   }

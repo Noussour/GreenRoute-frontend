@@ -45,7 +45,7 @@ function LoginForm() {
     // On success
     form.reset();
     showSuccessToast("Login successful");
-    router.push("/protected");
+    router.push("/new-route");
 
     setLoading(false);
   }
