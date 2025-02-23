@@ -45,7 +45,7 @@ function LoginForm() {
     // On success
     form.reset();
     showSuccessToast("Login successful");
-    router.push("/new-route");
+    router.push("/routes");
 
     setLoading(false);
   }

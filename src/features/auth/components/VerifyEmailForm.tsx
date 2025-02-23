@@ -48,7 +48,7 @@ function VerifyEmailForm() {
     // On success
     form.reset();
     showSuccessToast("Registration successful");
-    router.push("/new-route");
+    router.push("/routes");
 
     setLoading(false);
   }

@@ -5,7 +5,6 @@ import QueryProvider from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Footer } from "@/components/Footer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -13,8 +12,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Starter Template",
-  description: "Next starter template to get you up and running quickly.",
+  title: "GreenRoute",
+  description: "Designed for you, optimized for the planet.",
   keywords: ["Next.js", "Tailwind CSS", "TypeScript"],
 };
 
@@ -33,13 +32,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
-            <div className="relative min-h-screen flex justify-center">
+            <div>
               <main>{children}</main>
               <div className="absolute right-4 top-4">
                 <ThemeToggle />
               </div>
             </div>
-            <Footer />
             <Toaster />
           </QueryProvider>
         </ThemeProvider>
