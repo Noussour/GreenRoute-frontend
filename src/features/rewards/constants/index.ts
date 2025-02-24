@@ -1,6 +1,7 @@
 import { Gift, Leaf, TrendingUp } from "lucide-react";
+import { Reward } from "../types";
 
-export const rewards = [
+export const rewards: Reward[] = [
   {
     id: 1,
     name: "$10 Gift Card",
