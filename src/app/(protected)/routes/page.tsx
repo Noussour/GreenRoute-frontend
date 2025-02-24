@@ -11,36 +11,78 @@ import {
   Car,
   Train,
   FootprintsIcon as Walk,
+  Leaf,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import dynamic from "next/dynamic";
 
 const Map = dynamic(() => import("@/features/routes/components/Map"), {
   ssr: false,
 });
 
-const transportModes = [
-  { icon: Walk, label: "Walk" },
-  { icon: Bike, label: "Bike" },
-  { icon: Bus, label: "Bus" },
-  { icon: Train, label: "Train" },
-  { icon: Car, label: "Car" },
-];
+interface Route {
+  id: number;
+  mode: string;
+  icon: React.ElementType;
+  duration: string;
+  distance: string;
+  ecoScore: number;
+}
 
 export default function RoutesPage() {
   const [destination, setDestination] = useState("");
-  const [selectedMode, setSelectedMode] = useState("");
+  const [routes, setRoutes] = useState<Route[]>([]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement route search logic here
-    console.log(
-      "Searching for routes to:",
-      destination,
-      "using mode:",
-      selectedMode,
-    );
+    // Simulating API call to get routes
+    const mockRoutes: Route[] = [
+      {
+        id: 1,
+        mode: "Walk",
+        icon: Walk,
+        duration: "30 mins",
+        distance: "2 km",
+        ecoScore: 100,
+      },
+      {
+        id: 2,
+        mode: "Bike",
+        icon: Bike,
+        duration: "15 mins",
+        distance: "3 km",
+        ecoScore: 90,
+      },
+      {
+        id: 3,
+        mode: "Bus",
+        icon: Bus,
+        duration: "20 mins",
+        distance: "5 km",
+        ecoScore: 70,
+      },
+      {
+        id: 4,
+        mode: "Train",
+        icon: Train,
+        duration: "10 mins",
+        distance: "8 km",
+        ecoScore: 80,
+      },
+      {
+        id: 5,
+        mode: "Car",
+        icon: Car,
+        duration: "12 mins",
+        distance: "7 km",
+        ecoScore: 30,
+      },
+    ].sort((a, b) => b.ecoScore - a.ecoScore); // Sort by ecoScore descending
+
+    setRoutes(mockRoutes);
   };
 
   return (
@@ -59,7 +101,7 @@ export default function RoutesPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <form onSubmit={handleSearch} className="flex justify-center gap-2">
+        <form onSubmit={handleSearch} className="flex gap-2">
           <Input
             type="text"
             placeholder="Enter your destination"
@@ -73,25 +115,44 @@ export default function RoutesPage() {
           </Button>
         </form>
       </motion.div>
-      <motion.div
-        className="flex justify-center space-x-2"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        {transportModes.map(({ icon: Icon, label }) => (
-          <Button
-            key={label}
-            variant={selectedMode === label ? "default" : "outline"}
-            onClick={() => setSelectedMode(label)}
-            className="flex-col py-1 px-2 h-auto text-xs"
-            size="sm"
-          >
-            <Icon className="h-4 w-4 mb-1" />
-            {label}
-          </Button>
-        ))}
-      </motion.div>
+      {routes.length > 0 && (
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          {routes.map((route, index) => (
+            <Card
+              key={route.id}
+              className={index === 0 ? "border-green-500 border-2" : ""}
+            >
+              <CardHeader className="flex flex-row items-center justify-between py-2">
+                <CardTitle className="text-lg flex items-center">
+                  <route.icon className="h-5 w-5 mr-2" />
+                  {route.mode}
+                  {index === 0 && (
+                    <span className="ml-2 text-xs bg-green-500 text-white px-2 py-1 rounded-full flex items-center">
+                      <Leaf className="h-3 w-3 mr-1" />
+                      Best Eco Route
+                    </span>
+                  )}
+                </CardTitle>
+                <div className="text-sm text-muted-foreground">
+                  Eco Score: {route.ecoScore}
+                </div>
+              </CardHeader>
+              <CardContent className="py-2">
+                <div className="flex justify-between text-sm mb-1">
+                  <span>{route.duration}</span>
+                  <span>{route.distance}</span>
+                </div>
+                <Progress value={route.ecoScore} className="h-2" />
+              </CardContent>
+            </Card>
+          ))}
+        </motion.div>
+      )}
       <motion.div
         className="h-[300px] sm:h-[400px] rounded-lg overflow-hidden shadow-md"
         initial={{ opacity: 0, scale: 0.95 }}
