@@ -1,24 +1,18 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useEffect } from "react";
-import L from "leaflet";
+import dynamic from "next/dynamic";
+
+// Import the CSS statically
 import "leaflet/dist/leaflet.css";
 
+// Create a dynamic import for the Map component
+const Map = dynamic(
+  () => import("./Map"), // Create this component in a separate file
+  { ssr: false },
+);
+
 export default function RoutesMap() {
-  useEffect(() => {
-    const map = L.map("map").setView([51.505, -0.09], 13);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
-
-    return () => {
-      map.remove();
-    };
-  }, []);
-
   return (
     <motion.div
       key="map"
@@ -28,7 +22,7 @@ export default function RoutesMap() {
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <div id="map" style={{ height: "100%", width: "100%" }} />;
+      <Map />
     </motion.div>
   );
 }
