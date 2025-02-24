@@ -1,7 +1,7 @@
 export interface Route {
   id: number;
   mode: string;
-  icon: React.ElementType;
+  icon: string;
   duration: string;
   distance: string;
   ecoScore: number;
