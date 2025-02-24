@@ -1,10 +1,11 @@
 "use client";
 
+import { motion } from "motion/react";
 import { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-export default function Map() {
+export default function RoutesMap() {
   useEffect(() => {
     const map = L.map("map").setView([51.505, -0.09], 13);
 
@@ -18,5 +19,16 @@ export default function Map() {
     };
   }, []);
 
-  return <div id="map" style={{ height: "100%", width: "100%" }} />;
+  return (
+    <motion.div
+      key="map"
+      className="h-[500px] rounded-lg overflow-hidden shadow-lg border border-primary"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div id="map" style={{ height: "100%", width: "100%" }} />;
+    </motion.div>
+  );
 }

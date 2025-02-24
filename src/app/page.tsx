@@ -6,7 +6,6 @@ import {
   Leaf,
   Award,
   UserCircle,
-  LogIn,
   ChevronRight,
   Bike,
   Bus,
