@@ -1,24 +1,20 @@
 "use client";
 
-import type React from "react";
-
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Search, Bike, Car, FootprintsIcon as Walk, Leaf } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import RoutesMap from "@/features/routes/components/RoutesMap";
-import { getRoutes } from "@/lib/ors-api";
-import { Route } from "@/features/routes/types";
+import { motion } from "framer-motion";
 import { AutocompleteInput } from "@/components/AutoCompleteInput";
+import RoutesContainer from "@/features/routes/components/RoutesContainer";
+import useRouteStore from "@/features/routes/store/RouteStore";
+import { getRoutes } from "@/lib/ors-api";
 
 export default function RoutesPage() {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-  const [routes, setRoutes] = useState<Route[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const setRoutes = useRouteStore((state) => state.setRoutes);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,19 +28,6 @@ export default function RoutesPage() {
       setError("Failed to fetch routes. Please try again.");
     }
     setIsLoading(false);
-  };
-
-  const getIcon = (iconName: string) => {
-    switch (iconName) {
-      case "FootprintsIcon":
-        return Walk;
-      case "Bike":
-        return Bike;
-      case "Car":
-        return Car;
-      default:
-        return Walk;
-    }
   };
 
   return (
@@ -93,55 +76,7 @@ export default function RoutesPage() {
           {error}
         </motion.div>
       )}
-      {routes.length > 0 && (
-        <motion.div
-          className="space-y-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          {routes.map((route, index) => {
-            const Icon = getIcon(route.icon);
-            return (
-              <Card
-                key={route.id}
-                className={index === 0 ? "border-green-500 border-2" : ""}
-              >
-                <CardHeader className="flex flex-row items-center justify-between py-2">
-                  <CardTitle className="text-lg flex items-center">
-                    <Icon className="h-5 w-5 mr-2" />
-                    {route.mode}
-                    {index === 0 && (
-                      <span className="ml-2 text-xs bg-green-500 text-white px-2 py-1 rounded-full flex items-center">
-                        <Leaf className="h-3 w-3 mr-1" />
-                        Best Eco Route
-                      </span>
-                    )}
-                  </CardTitle>
-                  <div className="text-sm text-muted-foreground">
-                    Eco Score: {route.ecoScore}
-                  </div>
-                </CardHeader>
-                <CardContent className="py-2">
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>{route.duration}</span>
-                    <span>{route.distance}</span>
-                  </div>
-                  <Progress value={route.ecoScore} className="h-2" />
-                </CardContent>
-              </Card>
-            );
-          })}
-        </motion.div>
-      )}
-      <motion.div
-        className="h-[300px] sm:h-[400px] rounded-lg overflow-hidden shadow-md"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-      >
-        <RoutesMap />
-      </motion.div>
+      <RoutesContainer />
     </div>
   );
 }

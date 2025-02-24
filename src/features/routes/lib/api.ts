@@ -64,8 +64,8 @@ export async function getRoutes(from: string, to: string): Promise<Route[]> {
       const distance = (summary.distance / 1000).toFixed(2);
       const duration = (summary.duration / 60).toFixed(0);
 
-      let mode: "Walk" | "Bike" | "Car";
-      let icon: "FootprintsIcon" | "Bike" | "Car";
+      let mode: string;
+      let icon: string;
       let ecoScore: number;
 
       switch (profiles[index]) {
