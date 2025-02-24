@@ -1,45 +1,8 @@
-# Next.js Template
+# 🌍 GreenRoute - Eco-Friendly Route Planner
 
-Welcome to the **Next.js Template**, generated using **Next-Platter** – a CLI tool designed to quickly create and scaffold Next.js project templates with best practices and essential tools.
+## Overview
 
----
-
-## **Template Features**
-
-- **Modular Architecture:** Feature-folder structure for better modularity, maintainability, and scalability.
-- **Lightning Fast Performance:** Optimized with Next.js 15 and React 19.
-- **Enterprise-Grade Security:** Built-in authentication, authorization, and protected routes.
-- **Rich Ecosystem Integration:** Zod, React Hook Form, Zustand, React Query.
-- **Beautiful UI Components:** Shadcn/ui for modern, accessible design.
-- **Seamless Animations:** Framer Motion for smooth animations.
-- **End-to-End Testing:** Cypress integration for E2E testing.
-- **Containerization Ready:** Docker support for deployment.
-- **Theme Customization:** Next Themes for light/dark mode.
-- **Global Error & Success Handling:** Centralized user feedback.
-- **Global Loading State:** Managed with Zustand.
-- **API Handling Made Easy:** Pre-configured fetch instance.
-- **Authentication Flows:** Complete auth features.
-- **Cypress Test Coverage:** Extensive E2E tests.
-- **Template Presentation Pages:** Pre-built home and protected routes.
-- **Cookie Management:** Token-based auth.
-- **Server-Side Validation:** Zod with Next.js server actions.
-- **Client-Side Validation:** React Hook Form + Zod.
-
----
-
-## **Installed Libraries**
-
-This template comes with the following libraries pre-installed:
-
-- **Zod** (validation)
-- **React Hook Form** (form management)
-- **Zustand** (state management)
-- **React Query** (async state management)
-- **Shadcn/ui** (UI components)
-- **Framer Motion** (animations)
-- **Cypress** (E2E testing)
-- **Docker** (containerization)
-- **Next Themes** (theme management)
+GreenRoute is an AI-powered, eco-conscious route planner designed to help users choose the most sustainable transportation options. By analyzing multiple factors such as traffic congestion, elevation changes, and weather conditions, it suggests the best routes for minimal carbon emissions.
 
 ---
 
@@ -67,6 +30,45 @@ This structure is designed for flexibility and clarity. Add pages under `app/`, 
 
 ---
 
+## Features
+
+### Multi-Transport Route Suggestions
+
+- Get multiple route options using different modes of transport (car, bus, bike, walking, metro, etc.).
+- View all possible alternatives for a single trip to compare eco-friendly choices.
+
+### Eco-Friendly Route Optimization
+
+- AI-driven route calculation based on real-time traffic, elevation, and weather conditions.
+- Prioritizes paths that reduce fuel/battery consumption and carbon emissions.
+
+### Personalized Travel Recommendations
+
+- Suggests the most efficient and sustainable transport options tailored to the user’s preferences.
+- Provides estimated time and environmental impact for each suggested route.
+
+### Earn & Redeem Green Points
+
+- Users collect Green Points by choosing eco-friendly routes.
+- Points can be redeemed for discounts, gift cards, or perks from partnered businesses.
+
+### Business & Brand Collaboration
+
+- Local businesses and global brands can promote sustainability by offering rewards.
+- Businesses gain visibility through in-app advertisements and promotional campaigns.
+
+### Interactive Map Integration
+
+- Seamlessly integrates with OpenStreetMap for a dynamic and detailed route display.
+- Users can explore their journey visually and make informed decisions.
+
+### Modern & Responsive UI
+
+- Built with Next.js and Tailwind CSS for a fast, intuitive, and accessible user experience.
+- Mobile-friendly design for easy on-the-go navigation.
+
+---
+
 ## 🛠️ Configuration
 
 ### Environment Variables
@@ -80,14 +82,17 @@ This structure is designed for flexibility and clarity. Add pages under `app/`, 
 2. Update the content of `.env.local` with your related environment variables:
 
    ```plaintext
-   # URL for the public API
-   NEXT_PUBLIC_API_URL=http://localhost:8080
+    # URL for the public API endpoint
+    NEXT_PUBLIC_API_URL=http://localhost:8080
 
-   # Local development URL
-   LOCAL_URL=http://localhost:8080
+    # API key for OpenRoute service
+    NEXT_PUBLIC_OPENROUTE_API_KEY=your_openroute_api_key
 
-   # Host URL for the application
-   HOST_URL=http://localhost:8080
+    # Local development URL
+    LOCAL_URL=http://localhost:8080
+
+    # Host URL for the application
+    HOST_URL=http://localhost:8080
    ```
 
 ### Tailwind CSS
@@ -128,7 +133,7 @@ docker-compose down
 
 ## 🧪 **Testing with Cypress**
 
-### Run Tests :
+### Run Tests:
 
 ```bash
 npm run cypress:open
@@ -136,7 +141,7 @@ npm run cypress:open
 
 ---
 
-## **Contact**
+## 📞 **Contact**
 
 - **GitHub**: [Adel2411](https://github.com/Adel2411)
 - **Email**: [hadjarabadel.2411@gmail.com](mailto:hadjarabadel.2411@gmail.com)
