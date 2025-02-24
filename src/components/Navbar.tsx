@@ -26,32 +26,34 @@ export default function Navbar() {
             <Leaf className="h-6 w-6" />
             <span className="text-lg font-bold">GreenRoute</span>
           </Link>
-          <div className="hidden md:flex items-center space-x-2">
-            {navItems.map(({ path, icon: Icon, label }) => (
-              <Link key={path} href={path}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={`relative ${pathname === path ? "text-secondary" : "text-primary-foreground"}`}
-                >
-                  {pathname === path && (
-                    <motion.div
-                      className="absolute inset-0 bg-primary-foreground rounded-md z-0"
-                      layoutId="navbar-active"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 0.15 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30,
-                      }}
-                    />
-                  )}
-                  <Icon className="h-4 w-4 mr-1" />
-                  <span className="relative z-10 text-sm">{label}</span>
-                </Button>
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center space-x-8">
+            <div className="space-x-2">
+              {navItems.map(({ path, icon: Icon, label }) => (
+                <Link key={path} href={path}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={`relative ${pathname === path ? "text-secondary" : "text-primary-foreground"}`}
+                  >
+                    {pathname === path && (
+                      <motion.div
+                        className="absolute inset-0 bg-primary-foreground rounded-md z-0"
+                        layoutId="navbar-active"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.15 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                    <Icon className="h-4 w-4 mr-1" />
+                    <span className="relative z-10 text-sm">{label}</span>
+                  </Button>
+                </Link>
+              ))}
+            </div>
             <ThemeToggle />
           </div>
           <Button

@@ -1,9 +1,8 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Search,
   Bike,
@@ -12,11 +11,16 @@ import {
   Train,
   FootprintsIcon as Walk,
   Leaf,
+  Clock,
+  ArrowRight,
+  MapPin,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import dynamic from "next/dynamic";
 
 const Map = dynamic(() => import("@/features/routes/components/Map"), {
@@ -35,10 +39,11 @@ interface Route {
 export default function RoutesPage() {
   const [destination, setDestination] = useState("");
   const [routes, setRoutes] = useState<Route[]>([]);
+  const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
+  const [view, setView] = useState("list");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulating API call to get routes
     const mockRoutes: Route[] = [
       {
         id: 1,
@@ -80,87 +85,159 @@ export default function RoutesPage() {
         distance: "7 km",
         ecoScore: 30,
       },
-    ].sort((a, b) => b.ecoScore - a.ecoScore); // Sort by ecoScore descending
+    ].sort((a, b) => b.ecoScore - a.ecoScore);
 
     setRoutes(mockRoutes);
+    setSelectedRoute(null);
+  };
+
+  const getEcoScoreColor = (score: number) => {
+    if (score >= 90) return "text-green-500";
+    if (score >= 70) return "text-yellow-500";
+    return "text-red-500";
   };
 
   return (
-    <div className="space-y-4">
-      <motion.h1
-        className="text-2xl md:text-3xl font-bold text-center"
+    <div className="container mx-auto px-4 py-6 space-y-6">
+      <motion.div
+        className="text-center space-y-2"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        Find Your Green Route
-      </motion.h1>
+        <h1 className="text-3xl md:text-4xl font-bold">
+          Find Your Green Route
+        </h1>
+        <p className="text-muted-foreground">
+          Discover eco-friendly ways to travel
+        </p>
+      </motion.div>
+
       <motion.div
-        className="max-w-xl mx-auto"
+        className="max-w-2xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <form onSubmit={handleSearch} className="flex gap-2">
-          <Input
-            type="text"
-            placeholder="Enter your destination"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            className="flex-grow text-sm"
-          />
-          <Button type="submit" size="sm">
-            <Search className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">Search</span>
-          </Button>
-        </form>
+        <Card>
+          <CardContent className="pt-6">
+            <form onSubmit={handleSearch} className="flex gap-3">
+              <div className="relative flex-grow">
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Where do you want to go?"
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Button type="submit">
+                <Search className="h-4 w-4" />
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </motion.div>
+
       {routes.length > 0 && (
         <motion.div
           className="space-y-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          {routes.map((route, index) => (
-            <Card
-              key={route.id}
-              className={index === 0 ? "border-green-500 border-2" : ""}
-            >
-              <CardHeader className="flex flex-row items-center justify-between py-2">
-                <CardTitle className="text-lg flex items-center">
-                  <route.icon className="h-5 w-5 mr-2" />
-                  {route.mode}
-                  {index === 0 && (
-                    <span className="ml-2 text-xs bg-green-500 text-white px-2 py-1 rounded-full flex items-center">
-                      <Leaf className="h-3 w-3 mr-1" />
-                      Best Eco Route
-                    </span>
-                  )}
-                </CardTitle>
-                <div className="text-sm text-muted-foreground">
-                  Eco Score: {route.ecoScore}
-                </div>
-              </CardHeader>
-              <CardContent className="py-2">
-                <div className="flex justify-between text-sm mb-1">
-                  <span>{route.duration}</span>
-                  <span>{route.distance}</span>
-                </div>
-                <Progress value={route.ecoScore} className="h-2" />
-              </CardContent>
-            </Card>
-          ))}
+          <Tabs value={view} onValueChange={setView} className="w-full">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
+              <TabsTrigger value="list">List View</TabsTrigger>
+              <TabsTrigger value="map">Map View</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          <AnimatePresence mode="wait">
+            {view === "list" ? (
+              <motion.div
+                key="list"
+                className="space-y-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {routes.map((route, index) => (
+                  <motion.div
+                    key={route.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Card
+                      className={`transition-all hover:shadow-lg cursor-pointer ${
+                        selectedRoute?.id === route.id
+                          ? "ring-2 ring-primary"
+                          : ""
+                      }`}
+                      onClick={() => setSelectedRoute(route)}
+                    >
+                      <CardHeader className="flex flex-row items-center justify-between py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-primary/10 rounded-full">
+                            <route.icon className="h-5 w-5 text-primary" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg flex items-center gap-2">
+                              {route.mode}
+                              {index === 0 && (
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-green-500/10 text-green-500"
+                                >
+                                  <Leaf className="h-3 w-3 mr-1" />
+                                  Best Choice
+                                </Badge>
+                              )}
+                            </CardTitle>
+                          </div>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className={getEcoScoreColor(route.ecoScore)}
+                        >
+                          Eco Score: {route.ecoScore}
+                        </Badge>
+                      </CardHeader>
+                      <CardContent className="pb-4">
+                        <div className="flex items-center gap-4 mb-3 text-sm text-muted-foreground">
+                          <div className="flex items-center">
+                            <Clock className="h-4 w-4 mr-1" />
+                            {route.duration}
+                          </div>
+                          <div className="flex items-center">
+                            <ArrowRight className="h-4 w-4 mr-1" />
+                            {route.distance}
+                          </div>
+                        </div>
+                        <Progress value={route.ecoScore} className="h-2" />
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="map"
+                className="h-[500px] rounded-lg overflow-hidden shadow-lg border border-primary"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Map />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
-      <motion.div
-        className="h-[300px] sm:h-[400px] rounded-lg overflow-hidden shadow-md"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-      >
-        <Map />
-      </motion.div>
     </div>
   );
 }
